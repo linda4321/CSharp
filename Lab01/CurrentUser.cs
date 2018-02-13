@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//Not Used usings
 
 namespace Lab01
 {
-    class CurrentUser
+    internal class CurrentUser
     {
-        public static User CurrUser {get; set; }
+        internal static User CurrUser {get; set; }
     }
 }

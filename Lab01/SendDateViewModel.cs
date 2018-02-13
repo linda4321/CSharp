@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+//usings that are not used
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,16 +9,15 @@ using Lab01.Annotations;
 
 namespace Lab01
 {
-    class SendDateModelView : INotifyPropertyChanged
+    internal class SendDateModelView : INotifyPropertyChanged
     {
-        private DateTime _dateOfBirth;
+        private DateTime _dateOfBirth = DateTime.Today;
         private RelayCommand _sendDate;
-        private Action<bool> _showLoaderAction;
-        private readonly Action _closeAction;
+        private readonly Action<bool> _showLoaderAction;
+        //closeAction is never used
 
-        public SendDateModelView(Action close, Action<bool> showLoader)
+        internal SendDateModelView(Action<bool> showLoader)
         {
-            _closeAction = close;
             _showLoaderAction = showLoader;
         }
 
@@ -53,12 +50,12 @@ namespace Lab01
             User newUser = null;
 
             _showLoaderAction.Invoke(true);
-            await Task.Run((() =>
+            await Task.Run(() =>
             {
                 newUser = new User(_dateOfBirth);
                 Thread.Sleep(2000);
-            }));
-
+            });
+            //It is better to perform this check in constructor of User
             if (newUser.Age < 0 || newUser.Age > 135)
                 MessageBox.Show("Error! Your age must be from 0 to 135");
 
@@ -72,11 +69,9 @@ namespace Lab01
             _showLoaderAction.Invoke(false);
         }
 
-        private bool IsBirthday(DateTime birthday_date)
+        private bool IsBirthday(DateTime birthdayDate)
         {
-            if (DateTime.Today.Month.Equals(birthday_date.Month) && DateTime.Today.Day.Equals(birthday_date.Day))
-                return true;
-            return false;
+            return DateTime.Today.Month.Equals(birthdayDate.Month) && DateTime.Today.Day.Equals(birthdayDate.Day);
         }
 
         #region Implementation
